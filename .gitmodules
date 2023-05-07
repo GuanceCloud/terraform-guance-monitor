@@ -1,0 +1,3 @@
+[submodule "internal/ssot"]
+	path = internal/ssot
+	url = https://gitee.com/dataflux/dataflux-template.git

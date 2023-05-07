@@ -1,0 +1,121 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "Fluentd",
+              "field": "retry_count",
+              "fieldFunc": "last",
+              "fieldType": "integer",
+              "funcList": [],
+              "groupBy": [
+                "host",
+                "agent_port"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`Fluentd`:(LAST(`retry_count`))  BY `host`, `agent_port`",
+              "type": "simple"
+            },
+            "uuid": "73b80155-8500-4783-b821-4d2dc9a58263"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "10"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "10"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host",
+          "agent_port"
+        ],
+        "interval": 300,
+        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Fluentd 的 plugin 重试数为 {{ Result }}\n>建议：即时查看对应端口的 plugin 的状态",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`Fluentd`:(LAST(`retry_count`))  BY `host`, `agent_port`"
+          }
+        ],
+        "title": "主机 {{ host }} 发生 Fluentd 的 plugin 重试数过多异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Fluentd 检测库"
+    }

@@ -1,0 +1,116 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "aliyun_acs_ecs_dashboard",
+                  "field": "cpu_idle_Average",
+                  "fieldFunc": "last",
+                  "fieldType": "float",
+                  "groupBy": [
+                    "InstanceName"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`aliyun_acs_ecs_dashboard`:(LAST(`cpu_idle_Average`)) BY `InstanceName`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "100 - A",
+              "funcList": [],
+              "q": "eval(100-A, A=\"M::`aliyun_acs_ecs_dashboard`:(LAST(`cpu_idle_Average`)) BY `InstanceName`\")",
+              "type": "expression"
+            },
+            "uuid": "5935247d-1d0d-4f56-8a69-dff273a7a40d"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "InstanceName"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{InstanceName}}  \n>内容：阿里云 ECS CPU 使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：登录阿里云控制台查看 ECS 是否有异常",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(100-A, A=\"M::`aliyun_acs_ecs_dashboard`:(LAST(`cpu_idle_Average`)) BY `InstanceName`\")"
+          }
+        ],
+        "title": "阿里云 ECS 实例名称为 {{InstanceName}} CPU 使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "阿里云 ECS 检测库"
+    }

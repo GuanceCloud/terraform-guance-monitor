@@ -1,0 +1,121 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "ping",
+              "field": "percent_packet_loss",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "url"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`ping`:(LAST(`percent_packet_loss`)) BY `url`",
+              "type": "simple"
+            },
+            "uuid": "be99f4c0-3c92-49aa-995a-324bc5a6b888"
+          }
+        ],
+        "recoverNeedPeriodCount": 1,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "50",
+                  "80"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "50",
+                    "80"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "url"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>地址：{{url}}  \n>内容：当前检测地址丢包率为 {{ Result }}%  \n>建议：请查看是否为网络原因导致",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`ping`:(LAST(`percent_packet_loss`)) BY `url`"
+          }
+        ],
+        "title": "地址 {{ url }} Ping 丢包率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Ping 检测库"
+    }

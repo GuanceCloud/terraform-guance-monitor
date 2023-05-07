@@ -1,0 +1,127 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "elasticsearch_node_stats",
+                  "field": "thread_pool_search_rejected",
+                  "fieldFunc": "avg",
+                  "fieldType": "float",
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`elasticsearch_node_stats`:(AVG(`thread_pool_search_rejected`))  BY `host`",
+                  "type": "simple"
+                },
+                {
+                  "alias": "",
+                  "code": "B",
+                  "dataSource": "elasticsearch_indices_stats",
+                  "field": "total_search_query_total",
+                  "fieldFunc": "avg",
+                  "fieldType": "float",
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`elasticsearch_indices_stats`:(AVG(`total_search_query_total`))  BY `host`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/B",
+              "funcList": [],
+              "q": "eval(A/B, A=\"M::`elasticsearch_node_stats`:(AVG(`thread_pool_search_rejected`))  BY `host`\", B=\"M::`elasticsearch_indices_stats`:(AVG(`total_search_query_total`))  BY `host`\")",
+              "type": "expression"
+            },
+            "uuid": "b37ca09c-600e-4657-8ce1-7c0e2b9bcb0e"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 900,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 查询拒绝率过高 {{ Result }}%  \n>建议：询拒绝率表示单周期内集群执行查询操作被拒绝次数占查询总操作数的百分比。当查询拒绝率大于0%，即出现查询拒绝时，说明集群已经达到了查询操作处理能力的上限，或集群出现异常，应及时排查出现查询拒绝的原因并及时解决，否则会影响业务的查询操作。",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/B, A=\"M::`elasticsearch_node_stats`:(AVG(`thread_pool_search_rejected`))  BY `host`\", B=\"M::`elasticsearch_indices_stats`:(AVG(`total_search_query_total`))  BY `host`\")"
+          }
+        ],
+        "title": "主机 {{ host }} Elasticsearch 查询拒绝率过高",
+        "type": "simpleCheck"
+      }
+    }

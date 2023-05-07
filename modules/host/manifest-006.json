@@ -1,0 +1,107 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "swap",
+              "field": "used_percent",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`swap`:(LAST(`used_percent`)) BY `host`",
+              "type": "simple"
+            },
+            "uuid": "889b6426-b112-47ed-bf80-17ab7347c7f5"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "warning"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：内存 Swap 使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：内存 Swap 耗尽可能导致宕机风险，请查看内存使用率高的进程/应用是否为异常导致",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`swap`:(LAST(`used_percent`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} 内存 Swap 使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

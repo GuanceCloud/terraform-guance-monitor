@@ -1,0 +1,81 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "tencentcloud_QCE/CDB",
+              "field": "SlaveSqlRunning_max",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "InstanceName"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`tencentcloud_QCE/CDB`:(LAST(`SlaveSqlRunning_max`)) BY `InstanceName`",
+              "type": "simple"
+            },
+            "uuid": "911a9920-b306-473e-be67-d64d7ec5adf6"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": "="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": "="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "InstanceName"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{InstanceName}}  \n>内容：腾讯云 CDB Slave SQL 线程状态异常  \n>建议：登录腾讯云控制台查看 CDB 主从同步状态",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`tencentcloud_QCE/CDB`:(LAST(`SlaveSqlRunning_max`)) BY `InstanceName`"
+          }
+        ],
+        "title": "腾讯云 CDB 实例名称为 {{InstanceName}} Slave SQL 线程状态异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "腾讯云 CDB 检测库"
+    }

@@ -1,0 +1,106 @@
+{
+      "dashboardName": "Zookeeper 监控视图",
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "zookeeper",
+              "field": "avg_latency",
+              "fieldFunc": "last",
+              "fieldType": "string",
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`zookeeper`:(LAST(`avg_latency`)) BY `host`",
+              "type": "simple"
+            },
+            "uuid": "ae1403ac-499f-4494-8605-2236ed116c28"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "20"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "10"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "20"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "10"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Zookeeper 平均响应延迟过高为 {{ Result }}\n>建议：请及时查看 Zookeeper 运行状态",
+        "recoverNeedPeriodCount": 15,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`zookeeper`:(LAST(`avg_latency`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} 发生 Zookeeper 平均响应延迟过高异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Zookeeper 检测库"
+    }

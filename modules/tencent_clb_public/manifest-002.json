@@ -1,0 +1,110 @@
+{
+      "dashboardName": "混合云资源SLO",
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "tencentcloud_QCE/LB_PRIVATE",
+              "field": "OuttrafficVipRatio_max",
+              "fieldFunc": "last",
+              "fieldType": "",
+              "funcList": [],
+              "groupBy": [
+                "LoadBalancerName"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`tencentcloud_QCE/LB_PRIVATE`:(LAST(`OuttrafficVipRatio_max`)) BY `LoadBalancerName`",
+              "type": "simple"
+            },
+            "uuid": "d74b32ad-da4e-407b-8df0-09e0975c0a58"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "LoadBalancerName"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{LoadBalancerName}}  \n>内容：腾讯云 CLB Private 出带宽利用率为 {{ Result |  to_fixed(2) }}  \n>建议：登录腾讯云控制台查看 CLB 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`tencentcloud_QCE/LB_PRIVATE`:(LAST(`OuttrafficVipRatio_max`)) BY `LoadBalancerName`"
+          }
+        ],
+        "title": "腾讯云 CLB Private 实例名称为 {{LoadBalancerName}} 出带宽利用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "腾讯云 CLB Private 检测库"
+    }

@@ -1,0 +1,79 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aliyun_acs_kvstore",
+              "field": "StandardAvgRt_Average",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "InstanceName"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_kvstore`:(LAST(`StandardAvgRt_Average`)) BY `InstanceName`",
+              "type": "simple"
+            },
+            "uuid": "536feefb-9b24-4653-b90f-d312aa34b3d3"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "3000000"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "3000000"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "InstanceName"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{InstanceName}}  \n>内容：阿里云 Redis (标准版) 平均响应时间为 {{ Result/1000000 }} 秒      \n>建议：登录阿里云控制台查看 Redis 是否有异常",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aliyun_acs_kvstore`:(LAST(`StandardAvgRt_Average`)) BY `InstanceName`"
+          }
+        ],
+        "title": "阿里云 Redis (标准版) 实例 ID 为 {{InstanceName}} 平均响应时间过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "阿里云 Redis 标准版检测库"
+    }

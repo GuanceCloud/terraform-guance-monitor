@@ -1,0 +1,83 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "prom_state_metrics",
+              "field": "kube_pod_container_status_waiting_reason",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "cluster_name",
+                "node",
+                "pod"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_waiting_reason`)) BY `cluster_name`, `node`, `pod`",
+              "type": "simple"
+            },
+            "uuid": "13e50049-183c-4b6e-85fc-567d16afcb5f"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "cluster_name",
+          "node",
+          "pod"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>集群：{{ cluster_name }}\n>节点：{{ node}}\n>内容：Pod {{pod}} 启动超时失败\n>建议：登录集群查看 Pod 是否有异常",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_waiting_reason`)) BY `cluster_name`, `node`, `pod`"
+          }
+        ],
+        "title": "Pod {{pod}} 启动超时失败",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Kubernetes 检测库"
+    }

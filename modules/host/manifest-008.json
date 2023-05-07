@@ -1,0 +1,79 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "cpu",
+              "field": "usage_iowait",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`cpu`:(LAST(`usage_iowait`)) BY `host`",
+              "type": "simple"
+            },
+            "uuid": "a4e4a3dd-0b1b-4cec-b90b-ae9a6f1c0c09"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "60"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "60"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "warning"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：系统 CPU IOwait 为 {{ Result |  to_fixed(2) }}%  \n>建议：等待 I/O 的 CPU 时间过长，可能存在频繁写入或 I/O 瓶颈",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`cpu`:(LAST(`usage_iowait`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} CPU IOwait 过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

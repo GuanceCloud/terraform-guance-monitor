@@ -1,0 +1,99 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "aws_AWS/RDS",
+                  "field": "ReadLatency_Average",
+                  "fieldFunc": "avg",
+                  "fieldType": "float",
+                  "filters": [
+                    {
+                      "id": "9a1b8ee0-d903-11ed-b592-d3aeeb21a7f0",
+                      "logic": "and",
+                      "name": "Engine",
+                      "op": "=",
+                      "type": "",
+                      "value": "mysql"
+                    }
+                  ],
+                  "groupBy": [
+                    "DBInstanceIdentifier"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`aws_AWS/RDS`:(AVG(`ReadLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/1000",
+              "q": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`ReadLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")",
+              "type": "expression"
+            },
+            "uuid": "5875c10f-84b8-4774-b890-d7f15803de98"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "3"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "3"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "DBInstanceIdentifier"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceIdentifier}}  \n>内容：RDS Mysql 磁盘读取延迟为 {{ Result/1000 }}秒  \n>建议：登录 AWS 控制台查看 RDS 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`ReadLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")"
+          }
+        ],
+        "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} 磁盘读取延迟过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "AWS RDS MySQL 检测库"
+    }

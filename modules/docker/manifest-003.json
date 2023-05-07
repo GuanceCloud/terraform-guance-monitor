@@ -1,0 +1,120 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "count",
+              "code": "Result",
+              "dataSource": "docker_containers",
+              "field": "__docid",
+              "fieldFunc": "count",
+              "fieldType": "",
+              "fill": "",
+              "filters": [
+                {
+                  "id": "3a21bb10-0185-11ec-842f-cb094bcf15d3",
+                  "logic": "and",
+                  "name": "state",
+                  "op": "!=",
+                  "type": "keyword",
+                  "value": "running"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "host",
+                "container_name",
+                "state"
+              ],
+              "groupByTime": "",
+              "namespace": "object",
+              "q": "O::`docker_containers`:(COUNT(`__docid`) AS `count`) { `state` != 'running' } BY `host`, `container_name`, `state`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "uuid": "2b3c17fb-8627-4d79-92a4-27a78a2cc960"
+          }
+        ],
+        "recoverNeedPeriodCount": 1,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host",
+          "container_name",
+          "state"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：宿主机 {{ host }} 容器 {{ container_name }} 当前状态为 {{ state }}  \n>建议：基础设施-容器-运行状态选择非 running，点击查看该容器详情",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "O::`docker_containers`:(COUNT(`__docid`) AS `count`) { `state` != 'running' } BY `host`, `container_name`, `state`"
+          }
+        ],
+        "title": "宿主机 {{ host }} 容器 {{ container_name }} 状态异常",
+        "type": "loggingCheck"
+      },
+      "monitorName": "Docker 检测库"
+    }

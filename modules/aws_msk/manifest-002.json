@@ -1,0 +1,110 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aws_AWS/Kafka",
+              "field": "RootDiskUsed_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "groupBy": [
+                "Cluster Name",
+                "Broker ID"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/Kafka`:(AVG(`RootDiskUsed_Average`)) BY `Cluster Name`, `Broker ID`",
+              "type": "simple"
+            },
+            "uuid": "2c3b19ac-fbf7-456b-8c7c-e9220c0d0f8d"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "Cluster Name",
+          "Broker ID"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>集群：{{Cluster Name}}  \n>Broker ID：{{Broker ID}}\n>内容：MSK root 磁盘使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：登录 AWS 控制台查看 MSK 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aws_AWS/Kafka`:(AVG(`RootDiskUsed_Average`)) BY `Cluster Name`, `Broker ID`"
+          }
+        ],
+        "title": "AWS MSK 集群名称为 {{ Cluster Name }} Broker ID 为 {{ Broker ID }} root 磁盘使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "AWS MSK 检测库"
+    }

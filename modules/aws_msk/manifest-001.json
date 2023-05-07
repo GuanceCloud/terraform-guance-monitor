@@ -1,0 +1,100 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "aws_AWS/Kafka",
+                  "field": "MemoryFree_Average",
+                  "fieldFunc": "avg",
+                  "fieldType": "float",
+                  "filters": [
+                    {
+                      "id": "9e758a60-d9d8-11ed-8eec-03d402196414",
+                      "logic": "and",
+                      "name": "",
+                      "op": "=",
+                      "value": ""
+                    }
+                  ],
+                  "groupBy": [
+                    "Cluster Name",
+                    "Broker ID"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`aws_AWS/Kafka`:(AVG(`MemoryFree_Average`)) BY `Cluster Name`, `Broker ID`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/1024/1024",
+              "q": "eval(A/1024/1024, A=\"M::`aws_AWS/Kafka`:(AVG(`MemoryFree_Average`)) BY `Cluster Name`, `Broker ID`\")",
+              "type": "expression"
+            },
+            "uuid": "29f0898d-cfd1-43e4-97b7-2d770b3d7f4b"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "50"
+                ],
+                "operator": "<"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "50"
+                  ],
+                  "operator": "<"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "Cluster Name",
+          "Broker ID"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>集群：{{Cluster Name}}  \n>Broker ID：{{Broker ID}}\n>内容：MSK 剩余内存为 {{ Result/1024/1024}}M  \n>建议：登录 AWS 控制台查看 MSK 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/1024/1024, A=\"M::`aws_AWS/Kafka`:(AVG(`MemoryFree_Average`)) BY `Cluster Name`, `Broker ID`\")"
+          }
+        ],
+        "title": "AWS MSK 集群名称为 {{ Cluster Name }} Broker ID 为 {{ Broker ID }} 剩余内存过低",
+        "type": "simpleCheck"
+      },
+      "monitorName": "AWS MSK 检测库"
+    }

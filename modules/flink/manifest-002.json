@@ -1,0 +1,119 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "flink_taskmanager_job",
+              "field": "task_Shuffle_Netty_Output_Buffers_outPoolUsage",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "task_id"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`flink_taskmanager_job`:(LAST(`task_Shuffle_Netty_Output_Buffers_outPoolUsage`))  BY `task_id`",
+              "type": "simple"
+            },
+            "uuid": "a682943b-1228-49f3-8331-8451dacfe4c5"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0.95"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0.90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0.95"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0.90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "task_id"
+        ],
+        "interval": 900,
+        "message": ">等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前输出缓冲池中缓冲区使用率为 {{ Result }}\n>建议：子任务处于背压状态请及时查看",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`flink_taskmanager_job`:(LAST(`task_Shuffle_Netty_Output_Buffers_outPoolUsage`))  BY `task_id`"
+          }
+        ],
+        "title": "主机 {{ host }} 发生输出缓冲池中的所有缓冲区已满异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Flink 检测库"
+    }

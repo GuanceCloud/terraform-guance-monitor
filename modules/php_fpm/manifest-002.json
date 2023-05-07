@@ -1,0 +1,104 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "phpfpm",
+              "field": "max_children_reached",
+              "fieldFunc": "last",
+              "fieldType": "integer",
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`phpfpm`:(LAST(`max_children_reached`)) BY `host`",
+              "type": "simple"
+            },
+            "uuid": "d6e11960-fb9a-4a1b-8c20-a00e42bd16d3"
+          }
+        ],
+        "recoverNeedPeriodCount": 1,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：当前 PHP-FPM 进程最大限制次数为 {{ Result }}   \n>建议：适当调整 PHP-FPM 最大进程数",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`phpfpm`:(LAST(`max_children_reached`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} PHP-FPM 进程最大限制次数过多",
+        "type": "simpleCheck"
+      },
+      "monitorName": "PHP-FPM 检测库"
+    }

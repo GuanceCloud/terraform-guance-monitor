@@ -1,0 +1,109 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "tencentcloud_QCE/CVM",
+              "field": "Timeoffset_max",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "InstanceName"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`tencentcloud_QCE/CVM`:(LAST(`Timeoffset_max`)) BY `InstanceName`",
+              "type": "simple"
+            },
+            "uuid": "06c4ab41-2b8e-468c-9da7-32ee1d22175b"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "300"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "60",
+                  "300"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "300"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "60",
+                    "300"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "InstanceName"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{InstanceName}}  \n>内容：腾讯云 CVM 系统时间偏差为 {{ Result |  to_fixed(2) }}秒  \n>建议：登录腾讯云控制台查看 CVM 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`tencentcloud_QCE/CVM`:(LAST(`Timeoffset_max`)) BY `InstanceName`"
+          }
+        ],
+        "title": "腾讯云 CVM 实例名称为 {{InstanceName}} 系统时间偏差过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "腾讯云 CVM 检测库"
+    }

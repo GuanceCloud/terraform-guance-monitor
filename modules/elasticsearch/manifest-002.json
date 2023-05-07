@@ -1,0 +1,95 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "elasticsearch_indices_stats",
+                  "field": "total_search_query_total",
+                  "fieldFunc": "last",
+                  "fieldType": "float",
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "1800s",
+                  "namespace": "metric",
+                  "q": "M::`elasticsearch_indices_stats`:(LAST(`total_search_query_total`))  [::1800s] BY `host`",
+                  "queryFuncs": [],
+                  "type": "simple"
+                },
+                {
+                  "alias": "",
+                  "code": "B",
+                  "dataSource": "elasticsearch_indices_stats",
+                  "field": "total_search_query_time_in_millis",
+                  "fieldFunc": "last",
+                  "fieldType": "float",
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "1800s",
+                  "namespace": "metric",
+                  "q": "M::`elasticsearch_indices_stats`:(LAST(`total_search_query_time_in_millis`))  [::1800s] BY `host`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/B",
+              "funcList": [],
+              "q": "eval(A/B, A=\"M::`elasticsearch_indices_stats`:(LAST(`total_search_query_total`))  [::1800s] BY `host`\", B=\"M::`elasticsearch_indices_stats`:(LAST(`total_search_query_time_in_millis`))  [::1800s] BY `host`\")",
+              "type": "expression"
+            },
+            "uuid": "4201355b-6d03-48f9-bfab-17bee815eca7"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "checkCount": 1,
+            "conditionLogic": "and",
+            "direction": "both",
+            "periodNum": 3,
+            "status": "critical",
+            "strength": 3
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "checkCount": 1,
+              "conditionLogic": "and",
+              "direction": "both",
+              "periodNum": 3,
+              "status": "critical",
+              "strength": 3
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 1800,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 搜索查询负载异常\n>建议：请及时查看业务情况以保证Elasticsearch集群的可用性。",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/B, A=\"M::`elasticsearch_indices_stats`:(LAST(`total_search_query_total`))  [::1800s] BY `host`\", B=\"M::`elasticsearch_indices_stats`:(LAST(`total_search_query_time_in_millis`))  [::1800s] BY `host`\")"
+          }
+        ],
+        "title": "主机 {{ host }} Elasticsearch 搜索查询负载异常",
+        "type": "mutationsCheck"
+      }
+    }

@@ -1,0 +1,73 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "elasticsearch_node_stats",
+              "field": "thread_pool_transform_indexing_rejected",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "cluster_name",
+                "host"
+              ],
+              "groupByTime": "1800s",
+              "namespace": "metric",
+              "q": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_transform_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`",
+              "type": "simple"
+            },
+            "uuid": "33bcade0-1f84-477c-92c2-2eca74a842f0"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "checkCount": 1,
+            "conditionLogic": "and",
+            "direction": "up",
+            "periodNum": 3,
+            "status": "critical",
+            "strength": 3
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "checkCount": 1,
+              "conditionLogic": "and",
+              "direction": "up",
+              "periodNum": 3,
+              "status": "critical",
+              "strength": 3
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "cluster_name",
+          "host"
+        ],
+        "interval": 1800,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 转换索引线程池中被拒绝的线程数异常增加\n>建议： Elasticsearch 转换索引线程池中被拒绝的线程数异常增加，请及时降低减慢请求速率(如果可能)，或者增加节点上的处理器数量或增加群集中的节点数量, 保证Elasticsearch集群的可用性。",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_transform_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`"
+          }
+        ],
+        "title": "主机 {{ host }} Elasticsearch 转换索引线程池中被拒绝的线程数异常增加",
+        "type": "mutationsCheck"
+      }
+    }

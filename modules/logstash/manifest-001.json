@@ -1,0 +1,108 @@
+{
+      "dashboardName": "Logstash",
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": 10,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "logstash",
+              "field": "reloads_failures",
+              "fieldFunc": "last",
+              "fieldType": "integer",
+              "filters": [],
+              "funcList": [],
+              "groupBy": [
+                "host",
+                "version"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`logstash`:(LAST(`reloads_failures`)) BY `host`, `version`",
+              "type": "simple"
+            },
+            "uuid": "20cd847e-e8f7-4fc8-afa5-d76f3285afcd"
+          }
+        ],
+        "recoverNeedPeriodCount": 10,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host",
+          "version"
+        ],
+        "interval": 300,
+        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Logstash 配置重新加载失败次数为 {{ Result }}\n>建议：即时查看对应Logstash conf 配置",
+        "noDataPeriodCount": 10,
+        "recoverNeedPeriodCount": 10,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`logstash`:(LAST(`reloads_failures`)) BY `host`, `version`"
+          }
+        ],
+        "title": "主机 {{ host }} 发生 Logstash 配置重新加载失败异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Logstash 检测库"
+    }

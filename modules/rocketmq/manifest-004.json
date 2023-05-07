@@ -1,0 +1,79 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "rocketmq",
+              "field": "consumer_tps",
+              "fieldFunc": "sum",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "cluster"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`rocketmq`:(SUM(`consumer_tps`)) BY `cluster`",
+              "type": "simple"
+            },
+            "uuid": "51f5c4d1-27e9-4f4c-9a00-c6723a8174cd"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": "<"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": "<"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "cluster"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>集群：{{cluster}}  \n>内容：RocketMQ 集群发送 tps 为 {{ Result |  to_fixed(2) }}  \n>建议：查看集群是否异常导致",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`rocketmq`:(SUM(`consumer_tps`)) BY `cluster`"
+          }
+        ],
+        "title": "RocketMQ 集群 {{ cluster }} 消费 tps 过低",
+        "type": "simpleCheck"
+      },
+      "monitorName": "RocketMQ 检测库"
+    }

@@ -1,0 +1,119 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aws_AWS/RDS",
+              "field": "CPUUtilization_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "filters": [
+                {
+                  "id": "e5e51890-d8ff-11ed-9524-4135b2cb69c1",
+                  "logic": "and",
+                  "name": "Engine",
+                  "op": "=",
+                  "type": "",
+                  "value": "mysql"
+                }
+              ],
+              "groupBy": [
+                "DBInstanceIdentifier"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/RDS`:(AVG(`CPUUtilization_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
+              "type": "simple"
+            },
+            "uuid": "f610db33-78db-43fd-9d42-0de7046ae793"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "infoEvent": false,
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "DBInstanceIdentifier"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceIdentifier}}  \n>内容：RDS Mysql CPU 使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：登录 AWS 控制台查看 RDS 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aws_AWS/RDS`:(AVG(`CPUUtilization_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`"
+          }
+        ],
+        "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} CPU 使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "AWS RDS MySQL 检测库"
+    }

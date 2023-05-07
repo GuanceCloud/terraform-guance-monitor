@@ -1,0 +1,80 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aws_AWS/Kafka",
+              "field": "ActiveControllerCount_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "groupBy": [
+                "Cluster Name"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/Kafka`:(AVG(`ActiveControllerCount_Average`)) BY `Cluster Name`",
+              "type": "simple"
+            },
+            "uuid": "9789eb6f-c281-496e-bc6b-6d336766d1a6"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": "="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": "="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "Cluster Name"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>集群：{{Cluster Name}}  \n>内容：MSK 活跃控制器丢失    \n>建议：登录 AWS 控制台查看 MSK 是否有异常",
+        "noDataMessage": "",
+        "noDataTitle": "",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aws_AWS/Kafka`:(AVG(`ActiveControllerCount_Average`)) BY `Cluster Name`"
+          }
+        ],
+        "title": "AWS MSK 集群名称为 {{ Cluster Name }} 活跃控制器丢失",
+        "type": "simpleCheck"
+      },
+      "monitorName": "AWS MSK 检测库"
+    }

@@ -1,0 +1,110 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "system",
+              "field": "load5_per_core",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [],
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`system`:(LAST(`load5_per_core`)) BY `host`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "uuid": "f691f977-6b4c-401f-bb73-d8913faa47e1"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "2",
+                  "5"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "warning"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "5"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "2",
+                    "5"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "warning"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "5"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：系统 CPU 平均负载为 {{ Result |  to_fixed(2) }}  \n>建议：平均负载过高，可能是 CPU 密集型应用进程导致；如果同时 CPU 使用率不高，可能是 I/O 密集型应用进程导致",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`system`:(LAST(`load5_per_core`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} CPU 平均负载过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

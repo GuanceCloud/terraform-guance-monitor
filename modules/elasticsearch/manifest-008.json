@@ -1,0 +1,104 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "elasticsearch_node_stats",
+              "field": "os_cpu_percent",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "filters": [],
+              "funcList": [],
+              "groupBy": [
+                "cluster_name"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`elasticsearch_node_stats`:(AVG(`os_cpu_percent`))  BY `cluster_name`",
+              "type": "simple"
+            },
+            "uuid": "d5d8ba6b-1193-404d-b920-ff22a04f3dfd"
+          }
+        ],
+        "recoverNeedPeriodCount": null,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "cluster_name"
+        ],
+        "interval": 900,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 平均 CPU 使用率 过高为 {{ Result }}%  \n>建议：平均 CPU 使用率表示集群各节点 CPU 使用率的平均值。该值过高会导致集群节点处理能力下降，甚至宕机。发现 CPU 过高时，应根据集群当前节点配置情况和业务情况，提高节点规格或降低业务请求量。",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 0,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`elasticsearch_node_stats`:(AVG(`os_cpu_percent`))  BY `cluster_name`"
+          }
+        ],
+        "title": "主机 {{ host }} Elasticsearch 平均 CPU 使用率过高",
+        "type": "simpleCheck"
+      }
+    }

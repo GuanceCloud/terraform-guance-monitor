@@ -1,0 +1,89 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "mem",
+                  "field": "available",
+                  "fieldFunc": "last",
+                  "fieldType": "integer",
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`mem`:(LAST(`available`)) BY `host`",
+                  "queryFuncs": [],
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/1024/1024",
+              "funcList": [],
+              "q": "eval(A/1024/1024, A=\"M::`mem`:(LAST(`available`)) BY `host`\")",
+              "type": "expression"
+            },
+            "uuid": "65abbb09-1301-4ef7-b154-c81352c90373"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "100"
+                ],
+                "operator": "<="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "100"
+                  ],
+                  "operator": "<="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：内存为 {{ Result |  to_fixed(2) }}M  \n>建议：基础设施-进程-选择主机-内存使用率 (排序) 查看是否为异常导致",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/1024/1024, A=\"M::`mem`:(LAST(`available`)) BY `host`\")"
+          }
+        ],
+        "title": "主机 {{ host}} 内存小于 100M",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

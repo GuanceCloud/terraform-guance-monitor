@@ -89,28 +89,3 @@ This [Contribution Guidelines](https://guance.io/contribution-guide/) document c
 
 This repository is licensed under the [Apache 2.0 License](./LICENSE).
 
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END_TF_DOCS -->

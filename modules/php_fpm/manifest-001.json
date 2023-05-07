@@ -1,0 +1,104 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "phpfpm",
+              "field": "listen_queue",
+              "fieldFunc": "last",
+              "fieldType": "integer",
+              "funcList": [],
+              "groupBy": [
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`phpfpm`:(LAST(`listen_queue`)) BY `host`",
+              "type": "simple"
+            },
+            "uuid": "5420c387-3066-4a7f-960b-955e434b5972"
+          }
+        ],
+        "recoverNeedPeriodCount": 1,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "error"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [],
+                "operator": ">="
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：当前 PHP-FPM 请求等待队列为 {{ Result }}   \n>建议：增加 PHP-FPM 的进程数量",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`phpfpm`:(LAST(`listen_queue`)) BY `host`"
+          }
+        ],
+        "title": "主机 {{ host }} PHP-FPM 请求等待队列过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "PHP-FPM 检测库"
+    }

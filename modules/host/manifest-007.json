@@ -1,0 +1,107 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "disk",
+                  "field": "inodes_free",
+                  "fieldFunc": "last",
+                  "fieldType": "integer",
+                  "groupBy": [
+                    "host",
+                    "device"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`disk`:(LAST(`inodes_free`)) BY `host`, `device`",
+                  "queryFuncs": [],
+                  "type": "simple"
+                },
+                {
+                  "alias": "",
+                  "code": "B",
+                  "dataSource": "disk",
+                  "field": "inodes_total",
+                  "fieldFunc": "last",
+                  "fieldType": "integer",
+                  "groupBy": [
+                    "host",
+                    "device"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`disk`:(LAST(`inodes_total`)) BY `host`, `device`",
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "A/B*100",
+              "funcList": [],
+              "q": "eval(A/B*100, A=\"M::`disk`:(LAST(`inodes_free`)) BY `host`, `device`\", B=\"M::`disk`:(LAST(`inodes_total`)) BY `host`, `device`\")",
+              "type": "expression"
+            },
+            "uuid": "b3cfb628-67c5-45c5-b502-41ffcef605c0"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "5"
+                ],
+                "operator": "<="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "5"
+                  ],
+                  "operator": "<="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host",
+          "device"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：文件系统剩余 inode 为 {{ Result |  to_fixed(2) }}%  \n>建议：文件系统 inode 耗尽将无法写入数据，请查看是否有大量小文件占用 inode",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(A/B*100, A=\"M::`disk`:(LAST(`inodes_free`)) BY `host`, `device`\", B=\"M::`disk`:(LAST(`inodes_total`)) BY `host`, `device`\")"
+          }
+        ],
+        "title": "主机 {{ host }} 文件系统剩余 inode 过低",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

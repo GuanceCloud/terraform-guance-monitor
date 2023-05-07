@@ -1,0 +1,107 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aliyun_acs_mongodb",
+              "field": "MemoryUtilization_Average",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "DBInstanceDescription"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_mongodb`:(LAST(`MemoryUtilization_Average`)) BY `DBInstanceDescription`",
+              "type": "simple"
+            },
+            "uuid": "068dc308-adf0-4482-85bb-745c59e17be1"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "error"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "error"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "DBInstanceDescription"
+        ],
+        "interval": 300,
+        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceDescription}}  \n>内容：阿里云 MongoDB (副本集)  内存使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：登录阿里云控制台查看 MongoDB 是否有异常",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aliyun_acs_mongodb`:(LAST(`MemoryUtilization_Average`)) BY `DBInstanceDescription`"
+          }
+        ],
+        "title": "阿里云 MongoDB (副本集) 实例名称为 {{DBInstanceDescription}} 内存使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "阿里云 MongoDB (副本集) 检测库"
+    }

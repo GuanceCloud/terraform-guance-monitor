@@ -1,0 +1,118 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "children": [
+                {
+                  "alias": "",
+                  "code": "A",
+                  "dataSource": "cpu",
+                  "field": "usage_idle",
+                  "fieldFunc": "last",
+                  "fieldType": "float",
+                  "filters": [],
+                  "groupBy": [
+                    "host"
+                  ],
+                  "groupByTime": "",
+                  "namespace": "metric",
+                  "q": "M::`cpu`:(LAST(`usage_idle`)) BY `host`",
+                  "queryFuncs": [],
+                  "type": "simple"
+                }
+              ],
+              "code": "Result",
+              "expression": "100 - A",
+              "funcList": [],
+              "q": "eval(100 - A, A=\"M::`cpu`:(LAST(`usage_idle`)) BY `host`\")",
+              "type": "expression"
+            },
+            "uuid": "d10d4505-aca8-48c5-b80a-2ce8f24b26cd"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "warning"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "warning"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：系统 CPU 使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：基础设施-进程-选择主机-CPU 使用率 (排序) 查看是否为异常导致",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "eval(100 - A, A=\"M::`cpu`:(LAST(`usage_idle`)) BY `host`\")"
+          }
+        ],
+        "title": "主机 {{ host }} CPU 使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "主机检测库"
+    }

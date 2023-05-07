@@ -1,0 +1,112 @@
+{
+      "extend": {
+        "funcName": "",
+        "noDataPeriodCount": null,
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "docker_containers",
+              "field": "mem_used_percent",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "container_name",
+                "host"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`docker_containers`:(LAST(`mem_used_percent`))  BY `container_name`, `host`",
+              "type": "simple"
+            },
+            "uuid": "7e925086-70ed-43e4-b111-4af19f3409f4"
+          }
+        ],
+        "recoverNeedPeriodCount": 1,
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "80",
+                  "90"
+                ],
+                "operator": "between"
+              }
+            ],
+            "status": "warning"
+          },
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "90"
+                ],
+                "operator": ">"
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "80",
+                    "90"
+                  ],
+                  "operator": "between"
+                }
+              ],
+              "status": "warning"
+            },
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "90"
+                  ],
+                  "operator": ">"
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "container_name",
+          "host"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：容器 {{ container_name}} 内存使用率为 {{ Result |  to_fixed(2) }}%  \n>建议：基础设施-容器-选择主机-内存使用率 (排序) 查看是否为异常导致",
+        "noDataPeriodCount": 0,
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`docker_containers`:(LAST(`mem_used_percent`))  BY `container_name`, `host`"
+          }
+        ],
+        "title": "Docker 容器 {{ container_name}} 内存使用率过高",
+        "type": "simpleCheck"
+      },
+      "monitorName": "Docker 检测库"
+    }

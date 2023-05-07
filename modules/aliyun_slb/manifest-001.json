@@ -1,0 +1,81 @@
+{
+      "extend": {
+        "funcName": "",
+        "querylist": [
+          {
+            "datasource": "dataflux",
+            "qtype": "dql",
+            "query": {
+              "alias": "",
+              "code": "Result",
+              "dataSource": "aliyun_acs_slb_dashboard",
+              "field": "UnhealthyServerCount_Average",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "funcList": [],
+              "groupBy": [
+                "LoadBalancerName",
+                "RegionId"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_slb_dashboard`:(LAST(`UnhealthyServerCount_Average`)) BY `LoadBalancerName`, `RegionId`",
+              "type": "simple"
+            },
+            "uuid": "fd20975f-ed0d-46f1-87b1-b861a1d0b966"
+          }
+        ],
+        "rules": [
+          {
+            "conditionLogic": "and",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": ">="
+              }
+            ],
+            "status": "critical"
+          }
+        ]
+      },
+      "is_disable": false,
+      "jsonScript": {
+        "checkerOpt": {
+          "rules": [
+            {
+              "conditionLogic": "and",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "status": "critical"
+            }
+          ]
+        },
+        "every": "1m",
+        "groupBy": [
+          "LoadBalancerName",
+          "RegionId"
+        ],
+        "interval": 300,
+        "message": ">等级：{{status}}  \n>实例：{{LoadBalancerName}}  \n>地域：{{RegionId}}\n>内容：SLB 后端异常 ECS 数为 {{ Result }}   \n>建议：登录阿里云控制台查看 SLB 是否有异常",
+        "recoverNeedPeriodCount": 1,
+        "targets": [
+          {
+            "alias": "Result",
+            "dql": "M::`aliyun_acs_slb_dashboard`:(LAST(`UnhealthyServerCount_Average`)) BY `LoadBalancerName`, `RegionId`"
+          }
+        ],
+        "title": "阿里云 SLB 实例名称为 {{LoadBalancerName}} 后端 ECS 异常",
+        "type": "simpleCheck"
+      },
+      "monitorName": "阿里云 SLB 检测库"
+    }
