@@ -65,7 +65,7 @@ resource "guance_alertpolicy" "demo" {
 }
 
 module "aerospike" {
-  source  = "GuanceCloud/monitor/guance//modules/aerospike"
+  source          = "GuanceCloud/monitor/guance//modules/aerospike"
   version         = "0.0.1"
   alert_policy_id = guance_alertpolicy.demo.id
 }
@@ -73,7 +73,7 @@ module "aerospike" {
 
 Aerospike is one of the submodule in this repository.
 
-Use the submodules dropdown in [Hashicorp Registry](https://registry.terraform.io/modules/GuanceCloud/dashboard/guance/latest) to view the 156 submodules defined within this module.
+Use the submodules dropdown in [Hashicorp Registry](https://registry.terraform.io/modules/GuanceCloud/monitor/guance/latest) to view the 156 submodules defined within this module.
 
 ## Feedback
 
