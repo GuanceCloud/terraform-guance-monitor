@@ -1,104 +1,102 @@
 {
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": null,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "elasticsearch_cluster_health",
-              "field": "status",
-              "fieldFunc": "last",
-              "fieldType": "string",
-              "filters": [],
-              "funcList": [],
-              "groupBy": [
-                "host"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`elasticsearch_cluster_health`:(LAST(`status`))  BY `host`",
-              "type": "simple"
-            },
-            "uuid": "42835ca6-b59c-4462-be01-eb20534fb344"
-          }
-        ],
-        "recoverNeedPeriodCount": null,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "green"
-                ],
-                "operator": "!="
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "error"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "warning"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "green"
-                  ],
-                  "operator": "!="
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "elasticsearch_cluster_health",
+          "field": "status",
+          "fieldFunc": "last",
+          "fieldType": "string",
+          "filters": [],
+          "funcList": [],
+          "groupBy": [
+            "host"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`elasticsearch_cluster_health`:(LAST(`status`))  BY `host`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "host"
-        ],
-        "interval": 900,
-        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 集群状态异常\n>建议：ElasticsearchElasticsearch 集群状态异常，请及时查看集群各节点状态, 保证Elasticsearch集群的可用性。",
-        "noDataPeriodCount": 0,
-        "recoverNeedPeriodCount": 0,
-        "targets": [
+        "uuid": "42835ca6-b59c-4462-be01-eb20534fb344"
+      }
+    ],
+    "recoverNeedPeriodCount": null,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`elasticsearch_cluster_health`:(LAST(`status`))  BY `host`"
+            "operands": [
+              "green"
+            ],
+            "operator": "!="
           }
         ],
-        "title": "主机 {{ host }} Elasticsearch 集群状态异常",
-        "type": "simpleCheck"
+        "status": "critical"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "error"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "warning"
       }
-    }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "green"
+              ],
+              "operator": "!="
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "host"
+    ],
+    "interval": 900,
+    "message": "\u003e等级：{{status}}  \n\u003e主机：{{host}}  \n\u003e内容：Elasticsearch 集群状态异常\n\u003e建议：ElasticsearchElasticsearch 集群状态异常，请及时查看集群各节点状态, 保证Elasticsearch集群的可用性。",
+    "recoverNeedPeriodCount": 0,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`elasticsearch_cluster_health`:(LAST(`status`))  BY `host`"
+      }
+    ],
+    "title": "主机 {{ host }} Elasticsearch 集群状态异常",
+    "type": "simpleCheck"
+  }
+}

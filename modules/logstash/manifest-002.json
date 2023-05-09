@@ -1,107 +1,107 @@
 {
-      "dashboardName": "Logstash",
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": 10,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "logstash",
-              "field": "pipeline_reloads_failures",
-              "fieldFunc": "last",
-              "fieldType": "integer",
-              "funcList": [],
-              "groupBy": [
-                "host",
-                "version"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`logstash`:(LAST(`pipeline_reloads_failures`)) BY `host`, `version`",
-              "type": "simple"
-            },
-            "uuid": "8d11bdcf-fb6d-4a87-92b2-589420206549"
-          }
-        ],
-        "recoverNeedPeriodCount": 10,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "error"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "warning"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "dashboardName": "Logstash",
+  "extend": {
+    "funcName": "",
+    "noDataPeriodCount": 10,
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "logstash",
+          "field": "pipeline_reloads_failures",
+          "fieldFunc": "last",
+          "fieldType": "integer",
+          "funcList": [],
+          "groupBy": [
+            "host",
+            "version"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`logstash`:(LAST(`pipeline_reloads_failures`)) BY `host`, `version`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "host",
-          "version"
-        ],
-        "interval": 300,
-        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Logstash Pipeline配置重新加载失败次数为 {{ Result }}\n>建议：即时查看对应 plugin 状态",
-        "noDataPeriodCount": 10,
-        "recoverNeedPeriodCount": 10,
-        "targets": [
+        "uuid": "8d11bdcf-fb6d-4a87-92b2-589420206549"
+      }
+    ],
+    "recoverNeedPeriodCount": 10,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`logstash`:(LAST(`pipeline_reloads_failures`)) BY `host`, `version`"
+            "operands": [
+              "0"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "主机 {{ host }} 发生 Logstash Pipeline配置重新加载失败异常",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "Logstash 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "error"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "warning"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "host",
+      "version"
+    ],
+    "interval": 300,
+    "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n\u003e等级：{{ df_status }}\n\u003e主机：{{host}}  \n\u003e内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Logstash Pipeline配置重新加载失败次数为 {{ Result }}\n\u003e建议：即时查看对应 plugin 状态",
+    "noDataPeriodCount": 10,
+    "recoverNeedPeriodCount": 10,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`logstash`:(LAST(`pipeline_reloads_failures`)) BY `host`, `version`"
+      }
+    ],
+    "title": "主机 {{ host }} 发生 Logstash Pipeline配置重新加载失败异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Logstash 检测库"
+}

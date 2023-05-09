@@ -1,80 +1,80 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "aws_AWS/Kafka",
-              "field": "OfflinePartitionsCount_Average",
-              "fieldFunc": "avg",
-              "fieldType": "float",
-              "groupBy": [
-                "Cluster Name"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`aws_AWS/Kafka`:(AVG(`OfflinePartitionsCount_Average`)) BY `Cluster Name`",
-              "type": "simple"
-            },
-            "uuid": "f551e326-517d-43d7-aa32-7c7c33769024"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": ">="
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "aws_AWS/Kafka",
+          "field": "OfflinePartitionsCount_Average",
+          "fieldFunc": "avg",
+          "fieldType": "float",
+          "groupBy": [
+            "Cluster Name"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`aws_AWS/Kafka`:(AVG(`OfflinePartitionsCount_Average`)) BY `Cluster Name`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "Cluster Name"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>集群：{{Cluster Name}}  \n>内容：MSK 离线分区为 {{ Result }}个  \n>建议：登录 AWS 控制台查看 MSK 是否有异常",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "f551e326-517d-43d7-aa32-7c7c33769024"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`aws_AWS/Kafka`:(AVG(`OfflinePartitionsCount_Average`)) BY `Cluster Name`"
+            "operands": [
+              "0"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "AWS MSK 集群名称为 {{ Cluster Name }} 发生离线分区",
-        "type": "simpleCheck"
-      },
-      "monitorName": "AWS MSK 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "Cluster Name"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e集群：{{Cluster Name}}  \n\u003e内容：MSK 离线分区为 {{ Result }}个  \n\u003e建议：登录 AWS 控制台查看 MSK 是否有异常",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`aws_AWS/Kafka`:(AVG(`OfflinePartitionsCount_Average`)) BY `Cluster Name`"
+      }
+    ],
+    "title": "AWS MSK 集群名称为 {{ Cluster Name }} 发生离线分区",
+    "type": "simpleCheck"
+  },
+  "monitorName": "AWS MSK 检测库"
+}

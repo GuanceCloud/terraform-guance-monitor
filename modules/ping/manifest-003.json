@@ -1,104 +1,102 @@
 {
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": null,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "ping",
-              "field": "average_response_ms",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "funcList": [],
-              "groupBy": [
-                "url"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`ping`:(LAST(`average_response_ms`)) BY `url`",
-              "type": "simple"
-            },
-            "uuid": "7e2931d4-ff82-4f0e-9043-26b9e3db7d54"
-          }
-        ],
-        "recoverNeedPeriodCount": 1,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "3000"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "error"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "warning"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "3000"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "ping",
+          "field": "average_response_ms",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "funcList": [],
+          "groupBy": [
+            "url"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`ping`:(LAST(`average_response_ms`)) BY `url`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "url"
-        ],
-        "interval": 300,
-        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>地址：{{url}}  \n>内容：当前检测地址 Ping 响应时间为 {{ Result }}毫秒    \n>建议：请查看是否为网络原因导致",
-        "noDataPeriodCount": 0,
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "7e2931d4-ff82-4f0e-9043-26b9e3db7d54"
+      }
+    ],
+    "recoverNeedPeriodCount": 1,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`ping`:(LAST(`average_response_ms`)) BY `url`"
+            "operands": [
+              "3000"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "地址 {{ url }} Ping 响应时间过长",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "Ping 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "error"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "warning"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "3000"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "url"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{status}}  \n\u003e主机：{{host}}  \n\u003e地址：{{url}}  \n\u003e内容：当前检测地址 Ping 响应时间为 {{ Result }}毫秒    \n\u003e建议：请查看是否为网络原因导致",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`ping`:(LAST(`average_response_ms`)) BY `url`"
+      }
+    ],
+    "title": "地址 {{ url }} Ping 响应时间过长",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Ping 检测库"
+}

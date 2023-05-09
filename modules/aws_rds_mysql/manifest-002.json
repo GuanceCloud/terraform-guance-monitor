@@ -1,127 +1,127 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "children": [
+            {
               "alias": "",
-              "children": [
+              "code": "A",
+              "dataSource": "aws_AWS/RDS",
+              "field": "FreeStorageSpace_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "filters": [
                 {
-                  "alias": "",
-                  "code": "A",
-                  "dataSource": "aws_AWS/RDS",
-                  "field": "FreeStorageSpace_Average",
-                  "fieldFunc": "avg",
-                  "fieldType": "float",
-                  "filters": [
-                    {
-                      "id": "d216aed0-d901-11ed-b592-d3aeeb21a7f0",
-                      "logic": "and",
-                      "name": "Engine",
-                      "op": "=",
-                      "type": "",
-                      "value": "mysql"
-                    }
-                  ],
-                  "groupBy": [
-                    "DBInstanceIdentifier"
-                  ],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
-                  "type": "simple"
+                  "id": "d216aed0-d901-11ed-b592-d3aeeb21a7f0",
+                  "logic": "and",
+                  "name": "Engine",
+                  "op": "=",
+                  "type": "",
+                  "value": "mysql"
                 }
               ],
-              "code": "Result",
-              "expression": "A/1024/1024",
-              "q": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")",
-              "type": "expression"
-            },
-            "uuid": "be320475-fbb3-473e-8c60-da03b6c04dfb"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "500"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "500",
-                  "1024"
-                ],
-                "operator": "between"
-              }
-            ],
-            "status": "error"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "500"
-                  ],
-                  "operator": "<"
-                }
+              "groupBy": [
+                "DBInstanceIdentifier"
               ],
-              "status": "critical"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "500",
-                    "1024"
-                  ],
-                  "operator": "between"
-                }
-              ],
-              "status": "error"
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
+              "type": "simple"
             }
-          ]
+          ],
+          "code": "Result",
+          "expression": "A/1024/1024",
+          "q": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")",
+          "type": "expression"
         },
-        "every": "1m",
-        "groupBy": [
-          "DBInstanceIdentifier"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceIdentifier}}  \n>内容：RDS Mysql 可用存储空间为 {{ Result/1024/1024  }}M  \n>建议：登录 AWS 控制台查看 RDS 是否有异常",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "be320475-fbb3-473e-8c60-da03b6c04dfb"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")"
+            "operands": [
+              "500"
+            ],
+            "operator": "\u003c"
           }
         ],
-        "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier} 可用存储空间过低",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "AWS RDS MySQL 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "500",
+              "1024"
+            ],
+            "operator": "between"
+          }
+        ],
+        "status": "error"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "500"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "critical"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "500",
+                "1024"
+              ],
+              "operator": "between"
+            }
+          ],
+          "status": "error"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "DBInstanceIdentifier"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{DBInstanceIdentifier}}  \n\u003e内容：RDS Mysql 可用存储空间为 {{ Result/1024/1024  }}M  \n\u003e建议：登录 AWS 控制台查看 RDS 是否有异常",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeStorageSpace_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")"
+      }
+    ],
+    "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier} 可用存储空间过低",
+    "type": "simpleCheck"
+  },
+  "monitorName": "AWS RDS MySQL 检测库"
+}

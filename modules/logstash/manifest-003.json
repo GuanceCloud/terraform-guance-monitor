@@ -1,122 +1,122 @@
 {
-      "dashboardName": "Logstash",
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": 10,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "logstash",
-              "field": "jvm_mem_heap_used_percent",
-              "fieldFunc": "last",
-              "fieldType": "integer",
-              "funcList": [],
-              "groupBy": [
-                "host",
-                "version"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`logstash`:(LAST(`jvm_mem_heap_used_percent`)) BY `host`, `version`",
-              "type": "simple"
-            },
-            "uuid": "1424401f-a49a-425a-8be8-610fd8241240"
-          }
-        ],
-        "recoverNeedPeriodCount": 10,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "90"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "85"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "error"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [],
-                "operator": ">="
-              }
-            ],
-            "status": "warning"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "90"
-                  ],
-                  "operator": ">="
-                }
-              ],
-              "status": "critical"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "85"
-                  ],
-                  "operator": ">="
-                }
-              ],
-              "status": "error"
-            }
-          ]
+  "dashboardName": "Logstash",
+  "extend": {
+    "funcName": "",
+    "noDataPeriodCount": 10,
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "logstash",
+          "field": "jvm_mem_heap_used_percent",
+          "fieldFunc": "last",
+          "fieldType": "integer",
+          "funcList": [],
+          "groupBy": [
+            "host",
+            "version"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`logstash`:(LAST(`jvm_mem_heap_used_percent`)) BY `host`, `version`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "host",
-          "version"
-        ],
-        "interval": 300,
-        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Logstash Java 堆内存使用率为 {{ Result }}\n>建议：请及时查看 Logstash 运行状态",
-        "noDataPeriodCount": 10,
-        "recoverNeedPeriodCount": 10,
-        "targets": [
+        "uuid": "1424401f-a49a-425a-8be8-610fd8241240"
+      }
+    ],
+    "recoverNeedPeriodCount": 10,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`logstash`:(LAST(`jvm_mem_heap_used_percent`)) BY `host`, `version`"
+            "operands": [
+              "90"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "主机 {{ host }} 发生 Logstash Java 堆内存使用率过高异常",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "Logstash 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "85"
+            ],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "error"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [],
+            "operator": "\u003e="
+          }
+        ],
+        "status": "warning"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "90"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "85"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "error"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "host",
+      "version"
+    ],
+    "interval": 300,
+    "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n\u003e等级：{{ df_status }}\n\u003e主机：{{host}}  \n\u003e内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 Logstash Java 堆内存使用率为 {{ Result }}\n\u003e建议：请及时查看 Logstash 运行状态",
+    "noDataPeriodCount": 10,
+    "recoverNeedPeriodCount": 10,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`logstash`:(LAST(`jvm_mem_heap_used_percent`)) BY `host`, `version`"
+      }
+    ],
+    "title": "主机 {{ host }} 发生 Logstash Java 堆内存使用率过高异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Logstash 检测库"
+}

@@ -1,80 +1,80 @@
 {
-      "dashboardName": "Zookeeper 监控视图",
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "zookeeper",
-              "field": "uptime",
-              "fieldFunc": "last",
-              "fieldType": "integer",
-              "funcList": [],
-              "groupBy": [
-                "host"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`zookeeper`:(LAST(`uptime`)) BY `host`",
-              "type": "simple"
-            },
-            "uuid": "5048ec7c-a4e8-4306-b8d7-c18b247719c6"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": "="
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": "="
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "dashboardName": "Zookeeper 监控视图",
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "zookeeper",
+          "field": "uptime",
+          "fieldFunc": "last",
+          "fieldType": "integer",
+          "funcList": [],
+          "groupBy": [
+            "host"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`zookeeper`:(LAST(`uptime`)) BY `host`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "host"
-        ],
-        "interval": 300,
-        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 zookeeper 运行时间为 {{ Result }}\n>建议：请及时查看 zookeeper 运行状态",
-        "recoverNeedPeriodCount": 0,
-        "targets": [
+        "uuid": "5048ec7c-a4e8-4306-b8d7-c18b247719c6"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`zookeeper`:(LAST(`uptime`)) BY `host`"
+            "operands": [
+              "0"
+            ],
+            "operator": "="
           }
         ],
-        "title": "主机 {{ host }} 发生 Zookeeper 服务器宕机异常",
-        "type": "simpleCheck"
-      },
-      "monitorName": "Zookeeper 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "="
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "host"
+    ],
+    "interval": 300,
+    "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n\u003e等级：{{ df_status }}\n\u003e主机：{{host}}  \n\u003e内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前 zookeeper 运行时间为 {{ Result }}\n\u003e建议：请及时查看 zookeeper 运行状态",
+    "recoverNeedPeriodCount": 0,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`zookeeper`:(LAST(`uptime`)) BY `host`"
+      }
+    ],
+    "title": "主机 {{ host }} 发生 Zookeeper 服务器宕机异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Zookeeper 检测库"
+}

@@ -1,95 +1,95 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "children": [
-                {
-                  "alias": "",
-                  "code": "A",
-                  "dataSource": "aws_AWS/RDS",
-                  "field": "FreeableMemory_Average",
-                  "fieldFunc": "avg",
-                  "fieldType": "float",
-                  "filters": [
-                    {
-                      "id": "6ce396d0-d902-11ed-b592-d3aeeb21a7f0",
-                      "logic": "and",
-                      "name": "Engine",
-                      "op": "=",
-                      "type": "",
-                      "value": "mysql"
-                    }
-                  ],
-                  "groupBy": [],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }",
-                  "type": "simple"
-                }
-              ],
-              "code": "Result",
-              "expression": "A/1024/1024",
-              "q": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }\")",
-              "type": "expression"
-            },
-            "uuid": "5789af4d-a574-4c1e-a5cf-2913d5ed75a8"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "50"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "children": [
             {
-              "conditionLogic": "and",
-              "conditions": [
+              "alias": "",
+              "code": "A",
+              "dataSource": "aws_AWS/RDS",
+              "field": "FreeableMemory_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "filters": [
                 {
-                  "alias": "Result",
-                  "operands": [
-                    "50"
-                  ],
-                  "operator": "<"
+                  "id": "6ce396d0-d902-11ed-b592-d3aeeb21a7f0",
+                  "logic": "and",
+                  "name": "Engine",
+                  "op": "=",
+                  "type": "",
+                  "value": "mysql"
                 }
               ],
-              "status": "critical"
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }",
+              "type": "simple"
             }
-          ]
+          ],
+          "code": "Result",
+          "expression": "A/1024/1024",
+          "q": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }\")",
+          "type": "expression"
         },
-        "every": "1m",
-        "groupBy": [],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceIdentifier}}  \n>内容：RDS Mysql 可用内存为 {{ Result/1024/1024 }}M  \n>建议：登录 AWS 控制台查看 RDS 是否有异常",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "5789af4d-a574-4c1e-a5cf-2913d5ed75a8"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }\")"
+            "operands": [
+              "50"
+            ],
+            "operator": "\u003c"
           }
         ],
-        "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} 可用内存过低",
-        "type": "simpleCheck"
-      },
-      "monitorName": "AWS RDS MySQL 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "50"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{DBInstanceIdentifier}}  \n\u003e内容：RDS Mysql 可用内存为 {{ Result/1024/1024 }}M  \n\u003e建议：登录 AWS 控制台查看 RDS 是否有异常",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "eval(A/1024/1024, A=\"M::`aws_AWS/RDS`:(AVG(`FreeableMemory_Average`)) { `Engine` = 'mysql' }\")"
+      }
+    ],
+    "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} 可用内存过低",
+    "type": "simpleCheck"
+  },
+  "monitorName": "AWS RDS MySQL 检测库"
+}

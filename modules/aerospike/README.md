@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_guance"></a> [guance](#provider\_guance) | n/a |
+| <a name="provider_guance"></a> [guance](#provider\_guance) | 0.0.4 |
 
 ## Modules
 

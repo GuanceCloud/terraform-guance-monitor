@@ -1,81 +1,81 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "tencentcloud_QCE/LB_PUBLIC",
-              "field": "UnhealthRsCount_sum",
-              "fieldFunc": "last",
-              "fieldType": "",
-              "funcList": [],
-              "groupBy": [
-                "LoadBalancerName"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`tencentcloud_QCE/LB_PUBLIC`:(LAST(`UnhealthRsCount_sum`)) BY `LoadBalancerName`",
-              "type": "simple"
-            },
-            "uuid": "4681d63c-36e9-4c1c-9659-d8a9752ae5c1"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "tencentcloud_QCE/LB_PUBLIC",
+          "field": "UnhealthRsCount_sum",
+          "fieldFunc": "last",
+          "fieldType": "",
+          "funcList": [],
+          "groupBy": [
+            "LoadBalancerName"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`tencentcloud_QCE/LB_PUBLIC`:(LAST(`UnhealthRsCount_sum`)) BY `LoadBalancerName`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "LoadBalancerName"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>实例：{{LoadBalancerName}}  \n>内容：腾讯云 CLB Public 健康检查异常数为 {{ Result |  to_fixed(2) }}  \n>建议：登录腾讯云控制台查看 CLB 连通性",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "4681d63c-36e9-4c1c-9659-d8a9752ae5c1"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`tencentcloud_QCE/LB_PUBLIC`:(LAST(`UnhealthRsCount_sum`)) BY `LoadBalancerName`"
+            "operands": [
+              "0"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "腾讯云 CLB Public 实例名称为 {{LoadBalancerName}} 健康检查异常",
-        "type": "simpleCheck"
-      },
-      "monitorName": "腾讯云 CLB Public 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "LoadBalancerName"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{LoadBalancerName}}  \n\u003e内容：腾讯云 CLB Public 健康检查异常数为 {{ Result |  to_fixed(2) }}  \n\u003e建议：登录腾讯云控制台查看 CLB 连通性",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`tencentcloud_QCE/LB_PUBLIC`:(LAST(`UnhealthRsCount_sum`)) BY `LoadBalancerName`"
+      }
+    ],
+    "title": "腾讯云 CLB Public 实例名称为 {{LoadBalancerName}} 健康检查异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "腾讯云 CLB Public 检测库"
+}

@@ -1,84 +1,84 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "prom_state_metrics",
-              "field": "kube_pod_container_status_restarts_total",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "filters": [],
-              "funcList": [],
-              "groupBy": [
-                "cluster_name",
-                "node",
-                "pod"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_restarts_total`)) BY `cluster_name`, `node`, `pod`",
-              "type": "simple"
-            },
-            "uuid": "c868238f-a97c-40e6-8ee7-d67f5c91f5d7"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "3"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "error"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "3"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "error"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "prom_state_metrics",
+          "field": "kube_pod_container_status_restarts_total",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "filters": [],
+          "funcList": [],
+          "groupBy": [
+            "cluster_name",
+            "node",
+            "pod"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_restarts_total`)) BY `cluster_name`, `node`, `pod`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "cluster_name",
-          "node",
-          "pod"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>集群：{{ cluster_name }}\n>节点：{{ node}}\n>内容：Pod {{pod}} 频繁重启\n>建议：登录集群查看 Pod 是否有异常",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "c868238f-a97c-40e6-8ee7-d67f5c91f5d7"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_restarts_total`)) BY `cluster_name`, `node`, `pod`"
+            "operands": [
+              "3"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "Pod {{pod}} 频繁重启",
-        "type": "simpleCheck"
-      },
-      "monitorName": "Kubernetes 检测库"
-    }
+        "status": "error"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "3"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "error"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "cluster_name",
+      "node",
+      "pod"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e集群：{{ cluster_name }}\n\u003e节点：{{ node}}\n\u003e内容：Pod {{pod}} 频繁重启\n\u003e建议：登录集群查看 Pod 是否有异常",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`prom_state_metrics`:(LAST(`kube_pod_container_status_restarts_total`)) BY `cluster_name`, `node`, `pod`"
+      }
+    ],
+    "title": "Pod {{pod}} 频繁重启",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Kubernetes 检测库"
+}

@@ -1,109 +1,109 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "tencentcloud_QCE/CDB",
-              "field": "MemoryUseRate_max",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "funcList": [],
-              "groupBy": [
-                "InstanceName"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`tencentcloud_QCE/CDB`:(LAST(`MemoryUseRate_max`)) BY `InstanceName`",
-              "type": "simple"
-            },
-            "uuid": "65630ed0-29bc-4c7d-a526-d0c022684936"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "90"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "80",
-                  "90"
-                ],
-                "operator": "between"
-              }
-            ],
-            "status": "error"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "90"
-                  ],
-                  "operator": ">="
-                }
-              ],
-              "status": "critical"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "80",
-                    "90"
-                  ],
-                  "operator": "between"
-                }
-              ],
-              "status": "error"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "tencentcloud_QCE/CDB",
+          "field": "MemoryUseRate_max",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "funcList": [],
+          "groupBy": [
+            "InstanceName"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`tencentcloud_QCE/CDB`:(LAST(`MemoryUseRate_max`)) BY `InstanceName`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "InstanceName"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>实例：{{InstanceName}}  \n>内容：腾讯云 CDB 内存使用率为 {{ Result |  to_fixed(2) }}  \n>建议：登录腾讯云控制台查看 CDB 是否有异常",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "65630ed0-29bc-4c7d-a526-d0c022684936"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`tencentcloud_QCE/CDB`:(LAST(`MemoryUseRate_max`)) BY `InstanceName`"
+            "operands": [
+              "90"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "腾讯云 CDB 实例名称为 {{InstanceName}} 内存使用率过高",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "腾讯云 CDB 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "80",
+              "90"
+            ],
+            "operator": "between"
+          }
+        ],
+        "status": "error"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "90"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "80",
+                "90"
+              ],
+              "operator": "between"
+            }
+          ],
+          "status": "error"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "InstanceName"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{InstanceName}}  \n\u003e内容：腾讯云 CDB 内存使用率为 {{ Result |  to_fixed(2) }}  \n\u003e建议：登录腾讯云控制台查看 CDB 是否有异常",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`tencentcloud_QCE/CDB`:(LAST(`MemoryUseRate_max`)) BY `InstanceName`"
+      }
+    ],
+    "title": "腾讯云 CDB 实例名称为 {{InstanceName}} 内存使用率过高",
+    "type": "simpleCheck"
+  },
+  "monitorName": "腾讯云 CDB 检测库"
+}

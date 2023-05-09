@@ -1,136 +1,134 @@
 {
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": null,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "Fluentd",
-              "field": "buffer_available_buffer_space_ratios",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "funcList": [],
-              "groupBy": [
-                "host",
-                "agent_port"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`Fluentd`:(LAST(`buffer_available_buffer_space_ratios`))  BY `host`, `agent_port`",
-              "type": "simple"
-            },
-            "uuid": "e8af8c19-a214-43ff-8c4e-f08dd37f5b83"
-          }
-        ],
-        "recoverNeedPeriodCount": null,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "10"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "20"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "error"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "30"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "warning"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "10"
-                  ],
-                  "operator": "<"
-                }
-              ],
-              "status": "critical"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "20"
-                  ],
-                  "operator": "<"
-                }
-              ],
-              "status": "error"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "30"
-                  ],
-                  "operator": "<"
-                }
-              ],
-              "status": "warning"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "Fluentd",
+          "field": "buffer_available_buffer_space_ratios",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "funcList": [],
+          "groupBy": [
+            "host",
+            "agent_port"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`Fluentd`:(LAST(`buffer_available_buffer_space_ratios`))  BY `host`, `agent_port`",
+          "type": "simple"
         },
-        "every": "5m",
-        "groupBy": [
-          "host",
-          "agent_port"
-        ],
-        "interval": 300,
-        "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n>等级：{{ df_status }}\n>主机：{{host}}  \n>内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前Fluentd 剩余缓冲区的可用空间使用率为 {{ Result }}\n>建议：即时查看对应 plugin 状态",
-        "noDataPeriodCount": 0,
-        "recoverNeedPeriodCount": 0,
-        "targets": [
+        "uuid": "e8af8c19-a214-43ff-8c4e-f08dd37f5b83"
+      }
+    ],
+    "recoverNeedPeriodCount": null,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`Fluentd`:(LAST(`buffer_available_buffer_space_ratios`))  BY `host`, `agent_port`"
+            "operands": [
+              "10"
+            ],
+            "operator": "\u003c"
           }
         ],
-        "title": "主机 {{ host }} 发生 Fluentd 剩余缓冲区的可用空间异常",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "Fluentd 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "20"
+            ],
+            "operator": "\u003c"
+          }
+        ],
+        "status": "error"
+      },
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "30"
+            ],
+            "operator": "\u003c"
+          }
+        ],
+        "status": "warning"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "10"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "critical"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "20"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "error"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "30"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "warning"
+        }
+      ]
+    },
+    "every": "5m",
+    "groupBy": [
+      "host",
+      "agent_port"
+    ],
+    "interval": 300,
+    "message": "主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常\n\n\u003e等级：{{ df_status }}\n\u003e主机：{{host}}  \n\u003e内容：主机 {{ host }} 发生 {{ df_monitor_checker_name }} 异常，当前Fluentd 剩余缓冲区的可用空间使用率为 {{ Result }}\n\u003e建议：即时查看对应 plugin 状态",
+    "recoverNeedPeriodCount": 0,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`Fluentd`:(LAST(`buffer_available_buffer_space_ratios`))  BY `host`, `agent_port`"
+      }
+    ],
+    "title": "主机 {{ host }} 发生 Fluentd 剩余缓冲区的可用空间异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Fluentd 检测库"
+}

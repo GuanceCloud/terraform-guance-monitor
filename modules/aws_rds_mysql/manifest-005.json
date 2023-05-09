@@ -1,99 +1,99 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "children": [
-                {
-                  "alias": "",
-                  "code": "A",
-                  "dataSource": "aws_AWS/RDS",
-                  "field": "WriteLatency_Average",
-                  "fieldFunc": "avg",
-                  "fieldType": "float",
-                  "filters": [
-                    {
-                      "id": "f94a0360-d903-11ed-b592-d3aeeb21a7f0",
-                      "logic": "and",
-                      "name": "Engine",
-                      "op": "=",
-                      "type": "",
-                      "value": "mysql"
-                    }
-                  ],
-                  "groupBy": [
-                    "DBInstanceIdentifier"
-                  ],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
-                  "type": "simple"
-                }
-              ],
-              "code": "Result",
-              "expression": "A/1000",
-              "q": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")",
-              "type": "expression"
-            },
-            "uuid": "877040e6-f943-4976-a154-be453634727e"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "3"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "children": [
             {
-              "conditionLogic": "and",
-              "conditions": [
+              "alias": "",
+              "code": "A",
+              "dataSource": "aws_AWS/RDS",
+              "field": "WriteLatency_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "filters": [
                 {
-                  "alias": "Result",
-                  "operands": [
-                    "3"
-                  ],
-                  "operator": ">="
+                  "id": "f94a0360-d903-11ed-b592-d3aeeb21a7f0",
+                  "logic": "and",
+                  "name": "Engine",
+                  "op": "=",
+                  "type": "",
+                  "value": "mysql"
                 }
               ],
-              "status": "critical"
+              "groupBy": [
+                "DBInstanceIdentifier"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`",
+              "type": "simple"
             }
-          ]
+          ],
+          "code": "Result",
+          "expression": "A/1000",
+          "q": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")",
+          "type": "expression"
         },
-        "every": "1m",
-        "groupBy": [
-          "DBInstanceIdentifier"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>实例：{{DBInstanceIdentifier}}  \n>内容：RDS Mysql 磁盘写入延迟为 {{ Result/1000 }}秒  \n>建议：登录 AWS 控制台查看 RDS 是否有异常",
-        "noDataMessage": "",
-        "noDataTitle": "",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "877040e6-f943-4976-a154-be453634727e"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")"
+            "operands": [
+              "3"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} 磁盘写入延迟过高",
-        "type": "simpleCheck"
-      },
-      "monitorName": "AWS RDS MySQL 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "3"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "DBInstanceIdentifier"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{DBInstanceIdentifier}}  \n\u003e内容：RDS Mysql 磁盘写入延迟为 {{ Result/1000 }}秒  \n\u003e建议：登录 AWS 控制台查看 RDS 是否有异常",
+    "noDataMessage": "",
+    "noDataTitle": "",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "eval(A/1000, A=\"M::`aws_AWS/RDS`:(AVG(`WriteLatency_Average`)) { `Engine` = 'mysql' } BY `DBInstanceIdentifier`\")"
+      }
+    ],
+    "title": "AWS RDS Mysql 实例名称为 {{DBInstanceIdentifier}} 磁盘写入延迟过高",
+    "type": "simpleCheck"
+  },
+  "monitorName": "AWS RDS MySQL 检测库"
+}

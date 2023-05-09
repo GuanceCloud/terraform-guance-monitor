@@ -1,109 +1,109 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "prom_state_metrics",
-              "field": "kube_pod_status_phase",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "filters": [
-                {
-                  "id": "ca200c10-c04f-11ec-91c9-6f9ff92cfa27",
-                  "logic": "and",
-                  "name": "phase",
-                  "op": "=",
-                  "type": "",
-                  "value": "Failed"
-                },
-                {
-                  "id": "7b2b6c10-c051-11ec-91c9-6f9ff92cfa27",
-                  "logic": "or",
-                  "name": "phase",
-                  "op": "=",
-                  "type": "",
-                  "value": "Pending"
-                },
-                {
-                  "id": "991f92f0-c051-11ec-91c9-6f9ff92cfa27",
-                  "logic": "and",
-                  "name": "phase",
-                  "op": "=",
-                  "type": "",
-                  "value": "Unknown"
-                }
-              ],
-              "funcList": [],
-              "groupBy": [
-                "cluster_name",
-                "node",
-                "pod"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`prom_state_metrics`:(LAST(`kube_pod_status_phase`)) { `phase` = 'Failed' or `phase` = 'Pending' and `phase` = 'Unknown' } BY `cluster_name`, `node`, `pod`",
-              "type": "simple"
-            },
-            "uuid": "e0eb8c47-4349-4a89-8ad5-5e91c0a19e95"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "prom_state_metrics",
+          "field": "kube_pod_status_phase",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "filters": [
             {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "critical"
+              "id": "ca200c10-c04f-11ec-91c9-6f9ff92cfa27",
+              "logic": "and",
+              "name": "phase",
+              "op": "=",
+              "type": "",
+              "value": "Failed"
+            },
+            {
+              "id": "7b2b6c10-c051-11ec-91c9-6f9ff92cfa27",
+              "logic": "or",
+              "name": "phase",
+              "op": "=",
+              "type": "",
+              "value": "Pending"
+            },
+            {
+              "id": "991f92f0-c051-11ec-91c9-6f9ff92cfa27",
+              "logic": "and",
+              "name": "phase",
+              "op": "=",
+              "type": "",
+              "value": "Unknown"
             }
-          ]
+          ],
+          "funcList": [],
+          "groupBy": [
+            "cluster_name",
+            "node",
+            "pod"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`prom_state_metrics`:(LAST(`kube_pod_status_phase`)) { `phase` = 'Failed' or `phase` = 'Pending' and `phase` = 'Unknown' } BY `cluster_name`, `node`, `pod`",
+          "type": "simple"
         },
-        "every": "5m",
-        "groupBy": [
-          "cluster_name",
-          "node",
-          "pod"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}   \n>集群：{{ cluster_name }}\n>节点：{{ node}}\n>内容：Pod  {{pod}}状态异常\n>建议：登录集群查看 Pod 是否有异常",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "e0eb8c47-4349-4a89-8ad5-5e91c0a19e95"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`prom_state_metrics`:(LAST(`kube_pod_status_phase`)) { `phase` = 'Failed' or `phase` = 'Pending' and `phase` = 'Unknown' } BY `cluster_name`, `node`, `pod`"
+            "operands": [
+              "0"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "Kubernetes 集群 Pod {{ pod}} 状态异常",
-        "type": "simpleCheck"
-      },
-      "monitorName": "Kubernetes 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "5m",
+    "groupBy": [
+      "cluster_name",
+      "node",
+      "pod"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}   \n\u003e集群：{{ cluster_name }}\n\u003e节点：{{ node}}\n\u003e内容：Pod  {{pod}}状态异常\n\u003e建议：登录集群查看 Pod 是否有异常",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`prom_state_metrics`:(LAST(`kube_pod_status_phase`)) { `phase` = 'Failed' or `phase` = 'Pending' and `phase` = 'Unknown' } BY `cluster_name`, `node`, `pod`"
+      }
+    ],
+    "title": "Kubernetes 集群 Pod {{ pod}} 状态异常",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Kubernetes 检测库"
+}

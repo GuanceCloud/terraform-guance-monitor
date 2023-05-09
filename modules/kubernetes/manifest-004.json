@@ -1,81 +1,81 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "prom_state_metrics",
-              "field": "kube_job_status_failed",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "funcList": [],
-              "groupBy": [
-                "cluster_name",
-                "job_name"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`prom_state_metrics`:(LAST(`kube_job_status_failed`)) BY `cluster_name`, `job_name`",
-              "type": "simple"
-            },
-            "uuid": "139a9a2c-9b37-4f58-9858-cef83685bc34"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "0"
-                ],
-                "operator": ">"
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "0"
-                  ],
-                  "operator": ">"
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "prom_state_metrics",
+          "field": "kube_job_status_failed",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "funcList": [],
+          "groupBy": [
+            "cluster_name",
+            "job_name"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`prom_state_metrics`:(LAST(`kube_job_status_failed`)) BY `cluster_name`, `job_name`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "cluster_name",
-          "job_name"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>集群：{{ cluster_name }}\n>节点：{{ job_name}}\n>内容：Job 执行失败\n>建议：登录集群查看 Job 是否有异常",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "139a9a2c-9b37-4f58-9858-cef83685bc34"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`prom_state_metrics`:(LAST(`kube_job_status_failed`)) BY `cluster_name`, `job_name`"
+            "operands": [
+              "0"
+            ],
+            "operator": "\u003e"
           }
         ],
-        "title": "Job 执行失败",
-        "type": "simpleCheck"
-      },
-      "monitorName": "Kubernetes 检测库"
-    }
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "0"
+              ],
+              "operator": "\u003e"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "cluster_name",
+      "job_name"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e集群：{{ cluster_name }}\n\u003e节点：{{ job_name}}\n\u003e内容：Job 执行失败\n\u003e建议：登录集群查看 Job 是否有异常",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`prom_state_metrics`:(LAST(`kube_job_status_failed`)) BY `cluster_name`, `job_name`"
+      }
+    ],
+    "title": "Job 执行失败",
+    "type": "simpleCheck"
+  },
+  "monitorName": "Kubernetes 检测库"
+}

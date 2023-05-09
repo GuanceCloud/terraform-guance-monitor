@@ -1,130 +1,130 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "children": [
-                {
-                  "alias": "",
-                  "code": "A",
-                  "dataSource": "rocketmq",
-                  "field": "producer_offset",
-                  "fieldFunc": "last",
-                  "fieldType": "float",
-                  "groupBy": [
-                    "cluster"
-                  ],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`",
-                  "type": "simple"
-                },
-                {
-                  "alias": "",
-                  "code": "B",
-                  "dataSource": "rocketmq",
-                  "field": "consumer_offset",
-                  "fieldFunc": "last",
-                  "fieldType": "float",
-                  "groupBy": [
-                    "cluster"
-                  ],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`",
-                  "type": "simple"
-                }
-              ],
-              "code": "Result",
-              "expression": "A-B",
-              "funcList": [],
-              "q": "eval(A-B, A=\"M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`\", B=\"M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`\")",
-              "type": "expression"
-            },
-            "uuid": "de0bef1d-b022-4516-a611-ca2b8bc67896"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "50"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "10",
-                  "50"
-                ],
-                "operator": "between"
-              }
-            ],
-            "status": "error"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "children": [
             {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "50"
-                  ],
-                  "operator": ">="
-                }
+              "alias": "",
+              "code": "A",
+              "dataSource": "rocketmq",
+              "field": "producer_offset",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "groupBy": [
+                "cluster"
               ],
-              "status": "critical"
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`",
+              "type": "simple"
             },
             {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "10",
-                    "50"
-                  ],
-                  "operator": "between"
-                }
+              "alias": "",
+              "code": "B",
+              "dataSource": "rocketmq",
+              "field": "consumer_offset",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "groupBy": [
+                "cluster"
               ],
-              "status": "error"
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`",
+              "type": "simple"
             }
-          ]
+          ],
+          "code": "Result",
+          "expression": "A-B",
+          "funcList": [],
+          "q": "eval(A-B, A=\"M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`\", B=\"M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`\")",
+          "type": "expression"
         },
-        "every": "1m",
-        "groupBy": [
-          "cluster"
-        ],
-        "interval": 300,
-        "message": ">等级：{{df_status}}  \n>集群：{{cluster}}  \n>内容：RocketMQ 集群当前消费堆积为 {{ Result }}  \n>建议：查看集群是否异常导致",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "de0bef1d-b022-4516-a611-ca2b8bc67896"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "eval(A-B, A=\"M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`\", B=\"M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`\")"
+            "operands": [
+              "50"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "RocketMQ 集群 {{ cluster }} 消费堆积过高",
-        "type": "simpleCheck"
+        "status": "critical"
       },
-      "monitorName": "RocketMQ 检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "10",
+              "50"
+            ],
+            "operator": "between"
+          }
+        ],
+        "status": "error"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "50"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "10",
+                "50"
+              ],
+              "operator": "between"
+            }
+          ],
+          "status": "error"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "cluster"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{df_status}}  \n\u003e集群：{{cluster}}  \n\u003e内容：RocketMQ 集群当前消费堆积为 {{ Result }}  \n\u003e建议：查看集群是否异常导致",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "eval(A-B, A=\"M::`rocketmq`:(LAST(`producer_offset`)) BY `cluster`\", B=\"M::`rocketmq`:(LAST(`consumer_offset`)) BY `cluster`\")"
+      }
+    ],
+    "title": "RocketMQ 集群 {{ cluster }} 消费堆积过高",
+    "type": "simpleCheck"
+  },
+  "monitorName": "RocketMQ 检测库"
+}

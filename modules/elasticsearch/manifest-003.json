@@ -1,73 +1,71 @@
 {
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": null,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "elasticsearch_node_stats",
-              "field": "thread_pool_rollup_indexing_rejected",
-              "fieldFunc": "last",
-              "fieldType": "float",
-              "funcList": [],
-              "groupBy": [
-                "cluster_name",
-                "host"
-              ],
-              "groupByTime": "1800s",
-              "namespace": "metric",
-              "q": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_rollup_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`",
-              "type": "simple"
-            },
-            "uuid": "00d3c9f7-689f-4197-a7c0-aecf2eff3c13"
-          }
-        ],
-        "recoverNeedPeriodCount": null,
-        "rules": [
-          {
-            "checkCount": 1,
-            "conditionLogic": "and",
-            "direction": "up",
-            "periodNum": 3,
-            "status": "critical",
-            "strength": 3
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "checkCount": 1,
-              "conditionLogic": "and",
-              "direction": "up",
-              "periodNum": 3,
-              "status": "critical",
-              "strength": 3
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "elasticsearch_node_stats",
+          "field": "thread_pool_rollup_indexing_rejected",
+          "fieldFunc": "last",
+          "fieldType": "float",
+          "funcList": [],
+          "groupBy": [
+            "cluster_name",
+            "host"
+          ],
+          "groupByTime": "1800s",
+          "namespace": "metric",
+          "q": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_rollup_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "cluster_name",
-          "host"
-        ],
-        "interval": 1800,
-        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch 合并索引线程池中被拒绝的线程数异常增加\n>建议：Elasticsearch 合并索引线程池中被拒绝的线程数异常增加，请及时降低减慢请求速率(如果可能)，或者增加节点上的处理器数量或增加群集中的节点数量, 保证Elasticsearch集群的可用性。",
-        "noDataPeriodCount": 0,
-        "recoverNeedPeriodCount": 0,
-        "targets": [
-          {
-            "alias": "Result",
-            "dql": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_rollup_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`"
-          }
-        ],
-        "title": "主机 {{ host }} Elasticsearch 合并索引线程池中被拒绝的线程数异常增加",
-        "type": "mutationsCheck"
+        "uuid": "00d3c9f7-689f-4197-a7c0-aecf2eff3c13"
       }
-    }
+    ],
+    "recoverNeedPeriodCount": null,
+    "rules": [
+      {
+        "checkCount": 1,
+        "conditionLogic": "and",
+        "direction": "up",
+        "periodNum": 3,
+        "status": "critical",
+        "strength": 3
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "checkCount": 1,
+          "conditionLogic": "and",
+          "direction": "up",
+          "periodNum": 3,
+          "status": "critical",
+          "strength": 3
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "cluster_name",
+      "host"
+    ],
+    "interval": 1800,
+    "message": "\u003e等级：{{status}}  \n\u003e主机：{{host}}  \n\u003e内容：Elasticsearch 合并索引线程池中被拒绝的线程数异常增加\n\u003e建议：Elasticsearch 合并索引线程池中被拒绝的线程数异常增加，请及时降低减慢请求速率(如果可能)，或者增加节点上的处理器数量或增加群集中的节点数量, 保证Elasticsearch集群的可用性。",
+    "recoverNeedPeriodCount": 0,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`elasticsearch_node_stats`:(LAST(`thread_pool_rollup_indexing_rejected`))  [::1800s] BY `cluster_name`, `host`"
+      }
+    ],
+    "title": "主机 {{ host }} Elasticsearch 合并索引线程池中被拒绝的线程数异常增加",
+    "type": "mutationsCheck"
+  }
+}

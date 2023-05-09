@@ -1,121 +1,121 @@
 {
-      "extend": {
-        "funcName": "",
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "children": [
+            {
               "alias": "",
-              "children": [
-                {
-                  "alias": "",
-                  "code": "A",
-                  "dataSource": "disk",
-                  "field": "used_percent",
-                  "fieldFunc": "last",
-                  "fieldType": "float",
-                  "filters": [],
-                  "groupBy": [
-                    "host",
-                    "device"
-                  ],
-                  "groupByTime": "",
-                  "namespace": "metric",
-                  "q": "M::`disk`:(LAST(`used_percent`)) BY `host`, `device`",
-                  "queryFuncs": [],
-                  "type": "simple"
-                }
+              "code": "A",
+              "dataSource": "disk",
+              "field": "used_percent",
+              "fieldFunc": "last",
+              "fieldType": "float",
+              "filters": [],
+              "groupBy": [
+                "host",
+                "device"
               ],
-              "code": "Result",
-              "expression": "100-A",
-              "funcList": [],
-              "q": "eval(100-A, A=\"M::`disk`:(LAST(`used_percent`)) BY `host`, `device`\")",
-              "type": "expression"
-            },
-            "uuid": "4c123741-2f0a-4c67-9887-fee9cb651835"
-          }
-        ],
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "10",
-                  "5"
-                ],
-                "operator": "between"
-              }
-            ],
-            "status": "warning"
-          },
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "5"
-                ],
-                "operator": "<"
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "infoEvent": false,
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "10",
-                    "5"
-                  ],
-                  "operator": "between"
-                }
-              ],
-              "status": "warning"
-            },
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "5"
-                  ],
-                  "operator": "<"
-                }
-              ],
-              "status": "critical"
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`disk`:(LAST(`used_percent`)) BY `host`, `device`",
+              "queryFuncs": [],
+              "type": "simple"
             }
-          ]
+          ],
+          "code": "Result",
+          "expression": "100-A",
+          "funcList": [],
+          "q": "eval(100-A, A=\"M::`disk`:(LAST(`used_percent`)) BY `host`, `device`\")",
+          "type": "expression"
         },
-        "every": "1m",
-        "groupBy": [
-          "host",
-          "device"
-        ],
-        "interval": 300,
-        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：磁盘 {{device}} 剩余空间为 {{ Result |  to_fixed(2) }}%  \n>建议：磁盘空间即将耗尽，导致无法正常写入数据，请及时清理不必要的文件",
-        "recoverNeedPeriodCount": 1,
-        "targets": [
+        "uuid": "4c123741-2f0a-4c67-9887-fee9cb651835"
+      }
+    ],
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "eval(100-A, A=\"M::`disk`:(LAST(`used_percent`)) BY `host`, `device`\")"
+            "operands": [
+              "10",
+              "5"
+            ],
+            "operator": "between"
           }
         ],
-        "title": "主机 {{ host }} 磁盘剩余空间过低",
-        "type": "simpleCheck"
+        "status": "warning"
       },
-      "monitorName": "主机检测库"
-    }
+      {
+        "conditionLogic": "and",
+        "conditions": [
+          {
+            "alias": "Result",
+            "operands": [
+              "5"
+            ],
+            "operator": "\u003c"
+          }
+        ],
+        "status": "critical"
+      }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "infoEvent": false,
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "10",
+                "5"
+              ],
+              "operator": "between"
+            }
+          ],
+          "status": "warning"
+        },
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "5"
+              ],
+              "operator": "\u003c"
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "host",
+      "device"
+    ],
+    "interval": 300,
+    "message": "\u003e等级：{{status}}  \n\u003e主机：{{host}}  \n\u003e内容：磁盘 {{device}} 剩余空间为 {{ Result |  to_fixed(2) }}%  \n\u003e建议：磁盘空间即将耗尽，导致无法正常写入数据，请及时清理不必要的文件",
+    "recoverNeedPeriodCount": 1,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "eval(100-A, A=\"M::`disk`:(LAST(`used_percent`)) BY `host`, `device`\")"
+      }
+    ],
+    "title": "主机 {{ host }} 磁盘剩余空间过低",
+    "type": "simpleCheck"
+  },
+  "monitorName": "主机检测库"
+}

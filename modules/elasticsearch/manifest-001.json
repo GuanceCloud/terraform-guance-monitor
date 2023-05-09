@@ -1,82 +1,80 @@
 {
-      "extend": {
-        "funcName": "",
-        "noDataPeriodCount": null,
-        "querylist": [
-          {
-            "datasource": "dataflux",
-            "qtype": "dql",
-            "query": {
-              "alias": "",
-              "code": "Result",
-              "dataSource": "elasticsearch_node_stats",
-              "field": "jvm_mem_heap_used_percent",
-              "fieldFunc": "avg",
-              "fieldType": "float",
-              "filters": [],
-              "funcList": [],
-              "groupBy": [
-                "cluster_name"
-              ],
-              "groupByTime": "",
-              "namespace": "metric",
-              "q": "M::`elasticsearch_node_stats`:(AVG(`jvm_mem_heap_used_percent`))  BY `cluster_name`",
-              "type": "simple"
-            },
-            "uuid": "2815fcaa-f0b6-4854-b5cd-de046dce3cd0"
-          }
-        ],
-        "recoverNeedPeriodCount": null,
-        "rules": [
-          {
-            "conditionLogic": "and",
-            "conditions": [
-              {
-                "alias": "Result",
-                "operands": [
-                  "85"
-                ],
-                "operator": ">="
-              }
-            ],
-            "status": "critical"
-          }
-        ]
-      },
-      "is_disable": false,
-      "jsonScript": {
-        "checkerOpt": {
-          "rules": [
-            {
-              "conditionLogic": "and",
-              "conditions": [
-                {
-                  "alias": "Result",
-                  "operands": [
-                    "85"
-                  ],
-                  "operator": ">="
-                }
-              ],
-              "status": "critical"
-            }
-          ]
+  "extend": {
+    "funcName": "",
+    "querylist": [
+      {
+        "datasource": "dataflux",
+        "qtype": "dql",
+        "query": {
+          "alias": "",
+          "code": "Result",
+          "dataSource": "elasticsearch_node_stats",
+          "field": "jvm_mem_heap_used_percent",
+          "fieldFunc": "avg",
+          "fieldType": "float",
+          "filters": [],
+          "funcList": [],
+          "groupBy": [
+            "cluster_name"
+          ],
+          "groupByTime": "",
+          "namespace": "metric",
+          "q": "M::`elasticsearch_node_stats`:(AVG(`jvm_mem_heap_used_percent`))  BY `cluster_name`",
+          "type": "simple"
         },
-        "every": "1m",
-        "groupBy": [
-          "cluster_name"
-        ],
-        "interval": 900,
-        "message": ">等级：{{status}}  \n>主机：{{host}}  \n>内容：Elasticsearch JVM 堆内存的使用量为 {{ Result }}%  \n>建议：当前JVM垃圾的收集已经跟不上JVM垃圾的产生请及时查看业务情况",
-        "noDataPeriodCount": 0,
-        "recoverNeedPeriodCount": 0,
-        "targets": [
+        "uuid": "2815fcaa-f0b6-4854-b5cd-de046dce3cd0"
+      }
+    ],
+    "recoverNeedPeriodCount": null,
+    "rules": [
+      {
+        "conditionLogic": "and",
+        "conditions": [
           {
             "alias": "Result",
-            "dql": "M::`elasticsearch_node_stats`:(AVG(`jvm_mem_heap_used_percent`))  BY `cluster_name`"
+            "operands": [
+              "85"
+            ],
+            "operator": "\u003e="
           }
         ],
-        "title": "主机 {{ host }} Elasticsearch 平均 JVM 堆内存的使用量过高",
-        "type": "simpleCheck"
+        "status": "critical"
       }
-    }
+    ]
+  },
+  "is_disable": false,
+  "jsonScript": {
+    "checkerOpt": {
+      "rules": [
+        {
+          "conditionLogic": "and",
+          "conditions": [
+            {
+              "alias": "Result",
+              "operands": [
+                "85"
+              ],
+              "operator": "\u003e="
+            }
+          ],
+          "status": "critical"
+        }
+      ]
+    },
+    "every": "1m",
+    "groupBy": [
+      "cluster_name"
+    ],
+    "interval": 900,
+    "message": "\u003e等级：{{status}}  \n\u003e主机：{{host}}  \n\u003e内容：Elasticsearch JVM 堆内存的使用量为 {{ Result }}%  \n\u003e建议：当前JVM垃圾的收集已经跟不上JVM垃圾的产生请及时查看业务情况",
+    "recoverNeedPeriodCount": 0,
+    "targets": [
+      {
+        "alias": "Result",
+        "dql": "M::`elasticsearch_node_stats`:(AVG(`jvm_mem_heap_used_percent`))  BY `cluster_name`"
+      }
+    ],
+    "title": "主机 {{ host }} Elasticsearch 平均 JVM 堆内存的使用量过高",
+    "type": "simpleCheck"
+  }
+}
