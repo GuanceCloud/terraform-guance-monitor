@@ -66,7 +66,7 @@ resource "guance_alertpolicy" "demo" {
 
 module "aerospike" {
   source          = "GuanceCloud/monitor/guance//modules/aerospike"
-  version         = "0.0.2"
+  version         = "0.0.3"
   alert_policy_id = guance_alertpolicy.demo.id
 }
 ```

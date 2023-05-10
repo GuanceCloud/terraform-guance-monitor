@@ -64,8 +64,6 @@
     ],
     "interval": 300,
     "message": "\u003e等级：{{df_status}}  \n\u003e集群：{{Cluster Name}}  \n\u003e内容：MSK 活跃控制器丢失    \n\u003e建议：登录 AWS 控制台查看 MSK 是否有异常",
-    "noDataMessage": "",
-    "noDataTitle": "",
     "recoverNeedPeriodCount": 1,
     "targets": [
       {

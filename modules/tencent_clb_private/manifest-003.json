@@ -93,8 +93,6 @@
     ],
     "interval": 300,
     "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{LoadBalancerName}}  \n\u003e内容：腾讯云 CLB Public 出带宽利用率为 {{ Result |  to_fixed(2) }}  \n\u003e建议：登录腾讯云控制台查看 CLB 是否有异常",
-    "noDataMessage": "",
-    "noDataTitle": "",
     "recoverNeedPeriodCount": 1,
     "targets": [
       {

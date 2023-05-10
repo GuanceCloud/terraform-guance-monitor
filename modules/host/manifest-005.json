@@ -69,7 +69,6 @@
   "is_disable": false,
   "jsonScript": {
     "checkerOpt": {
-      "infoEvent": false,
       "rules": [
         {
           "conditionLogic": "and",

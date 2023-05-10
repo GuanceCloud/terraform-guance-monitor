@@ -65,8 +65,6 @@
     ],
     "interval": 300,
     "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{InstanceName}}  \n\u003e内容：腾讯云 CDB Slave SQL 线程状态异常  \n\u003e建议：登录腾讯云控制台查看 CDB 主从同步状态",
-    "noDataMessage": "",
-    "noDataTitle": "",
     "recoverNeedPeriodCount": 1,
     "targets": [
       {

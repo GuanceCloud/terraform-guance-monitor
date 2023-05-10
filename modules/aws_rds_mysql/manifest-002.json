@@ -111,8 +111,6 @@
     ],
     "interval": 300,
     "message": "\u003e等级：{{df_status}}  \n\u003e实例：{{DBInstanceIdentifier}}  \n\u003e内容：RDS Mysql 可用存储空间为 {{ Result/1024/1024  }}M  \n\u003e建议：登录 AWS 控制台查看 RDS 是否有异常",
-    "noDataMessage": "",
-    "noDataTitle": "",
     "recoverNeedPeriodCount": 1,
     "targets": [
       {
